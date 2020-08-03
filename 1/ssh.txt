@@ -1,3 +1,0 @@
-SSH is an unix based command interface and network based protocol.
-ait pune ait pune
-

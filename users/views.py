@@ -52,7 +52,7 @@ def upload(request):
         uploaded_file = request.FILES["document"]
         if not check_title_presence(uploaded_file):
             messages.success(request, "New file save successfully.")
-            path = save_on_server(uploaded_file, request.user)
+            path = save_on_server(uploaded_file)
             hash_val = hash_file(path)
             form = File(title=uploaded_file.name, hash_val=hash_val, user=request.user)
             form.save()
@@ -133,11 +133,11 @@ def check_file_presence(hash_val):
     return False
 
 
-def save_on_server(uploaded_file, user):
+def save_on_server(uploaded_file):
     """
 
     """
-    fs = FileSystemStorage(location=str(user.id) + '/')
+    fs = FileSystemStorage()
     name = fs.save(uploaded_file.name, uploaded_file)
     url = fs.url(name)
     path = "/".join(os.path.dirname(os.path.realpath(__file__)).split("/")[:-1])
