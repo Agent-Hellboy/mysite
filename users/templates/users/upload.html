@@ -2,8 +2,6 @@
 
 {% block content%}
     <h1> Welcome {{ request.user }}</h1>
-
-
   <h2>Upload</h2>
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
@@ -21,4 +19,5 @@
     {% endfor %}
 </ul>
 {% endif %}
+<a href="{% url 'dashboard' %}">Return to Dashboard</a><br>
 {% endblock %}

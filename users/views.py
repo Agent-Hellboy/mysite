@@ -1,19 +1,31 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from users.forms import RegistrationForm
-from django.contrib import messages, auth
-from django.contrib.auth.decorators import login_required
-from .models import File
 import hashlib
 import os
 import random
+
+from django.http import HttpResponse
+from django.contrib import messages, auth
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.core.files.storage import FileSystemStorage
 
+from .models import File
+from users.forms import RegistrationForm
+from .handle_file import file_handle
+
 
 def index(request):
     return render(request, 'users/index.html')
+
+
+def fhandle(request, name):
+    path = "/".join(os.path.dirname(os.path.realpath(__file__)).split("/")[:-1])
+    new_path = path + '/media/' + name
+    with open(new_path) as f:
+        text = f.read()
+    file_handle(text)
+    return redirect('dashboard')
 
 
 def register(request):
