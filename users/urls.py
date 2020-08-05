@@ -10,4 +10,6 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('file/<str:name>/', views.fhandle, name='fhandler'),
     path('upload/', views.upload, name='upload'),
+    path('teaminfo/', views.teaminfo, name='teaminfo'),
+    path('team/', views.create_team, name='create_team'),
 ]

@@ -7,16 +7,39 @@ from django.http import HttpResponse
 from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
-from django.contrib.auth.models import User
 from django.core.files.storage import FileSystemStorage
 
-from .models import File
-from users.forms import RegistrationForm
+from .models import User, File, Team
+from users.forms import RegistrationForm, TeamForm
 from .handle_file import file_handle
 
 
 def index(request):
     return render(request, 'users/index.html')
+
+
+def teaminfo(request):
+    teams = Team.objects.all()
+    n = len(teams)
+    teams_users = []
+    for i in teams:
+        users = User.objects.filter(team=i)
+        teams_users.append(users)
+    return render(request, 'users/teaminfo.html', {'n': range(n), 'teams': teams, 'user_team': teams_users})
+
+
+@login_required
+def create_team(request):
+    if request.method == 'POST':
+        form = TeamForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'You are successfully registered')
+            return redirect('dashboard')
+    else:
+        form = TeamForm()
+
+    return render(request, 'users/team.html', {'form': form})
 
 
 def fhandle(request, name):
